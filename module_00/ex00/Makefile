@@ -10,6 +10,12 @@ $(NAME):
 	c++ $(FLAGS) $(FILES) -o $(NAME)
 	echo $(NAME) > .gitignore
 
+run: re
+	./$(NAME)
+
+valgrind: re
+	valgrind ./$(NAME)
+
 fclean:
 	rm -f $(NAME)
 
@@ -20,4 +26,4 @@ re: fclean all;
 # CONFIGURATION
 ################################################################################
 
-.PHONY: all bonus clean fclean re rebuild debug
+.PHONY: all bonus clean fclean re valgrind run

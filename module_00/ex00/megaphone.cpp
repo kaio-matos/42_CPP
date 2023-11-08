@@ -6,11 +6,10 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/10/31 20:33:52 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2023/10/31 20:44:50 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ostream>
 #include <iostream>
 
 std::string toUpper(std::string str) {
