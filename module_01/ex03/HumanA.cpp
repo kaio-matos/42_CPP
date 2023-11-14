@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   HumanA.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:34:27 by kmatos-s         ###   ########.fr       */
+/*   Created: 2023/10/31 20:43:12 by kmatos-s          #+#    #+#             */
+/*   Updated: 2023/11/13 20:35:32 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ostream>
-#include <iostream>
+#include "HumanA.hpp"
 
-int	main(void) {
-	return (0);
+HumanA::HumanA(std::string name, Weapon &weapon): name(name), weapon(weapon) {}
+
+HumanA::~HumanA(void) {}
+
+void HumanA::attack(void) {
+    std::cout << this->name << " attacks with their " << this->weapon.getType() << std::endl;
 }

@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Weapon.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:34:27 by kmatos-s         ###   ########.fr       */
+/*   Created: 2023/10/31 20:43:12 by kmatos-s          #+#    #+#             */
+/*   Updated: 2023/11/13 21:28:54 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Weapon.hpp"
 #include <ostream>
 #include <iostream>
 
-int	main(void) {
-	return (0);
+Weapon::Weapon(std::string type): type(type) {}
+Weapon::Weapon(void) {}
+
+Weapon::~Weapon(void) {}
+
+const std::string &Weapon::getType() {
+    return this->type;
 }
+
+void Weapon::setType(std::string type) {
+    this->type = type;
+}
+
+

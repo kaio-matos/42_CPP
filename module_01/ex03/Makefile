@@ -1,8 +1,8 @@
 
-NAME=pointers_and_references
+NAME=unnecessary_violence
 FLAGS= -Wall -Wextra -Werror -std=c++98
 
-FILES=main.cpp
+FILES=main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
 
 all: $(NAME);
 
