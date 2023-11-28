@@ -48,9 +48,9 @@ class Float32 {
         const mantissa = [...this.mantissa].map(Number)
 
 
-        const isExponentAllOneBits = !exponent.filter(v => v !== 1).length
-        const isExponentAllZeroBits = Boolean(exponent.filter(v => v !== 1).length)
-        const isMantissaAllZeroBits = Boolean(mantissa.filter(v => v !== 1).length)
+        const isExponentAllOneBits = exponent.filter(v => v === 1).length === 8
+        const isExponentAllZeroBits = exponent.filter(v => v === 0).length === 8
+        const isMantissaAllZeroBits = mantissa.filter(v => v === 0).length === 23
 
         /**
          * Special  Cases
@@ -102,6 +102,7 @@ const tests = [
     { my: new Float32('1', '10000001', '10110011001100110011010').getValue(), value: -6.800000190734863 },
     { my: new Float32('0', '11111111', '00000000000000000000000').getValue(), value: Infinity },
     { my: new Float32('1', '11111111', '00000000000000000000000').getValue(), value: -Infinity },
-    { my: new Float32('1', '11111111', '01000000000000000001000').getValue(), value: NaN }
+    { my: new Float32('1', '11111111', '01000000000000000001000').getValue(), value: NaN },
+    { my: new Float32('0', '10000100', '01010011010111000010100').getValue(), value: 42.42 }
 ]
 console.log(tests)
