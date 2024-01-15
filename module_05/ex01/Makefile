@@ -1,0 +1,32 @@
+
+NAME=form
+FLAGS= -Wall -Wextra -Werror -std=c++98
+
+FILES=Bureaucrat.cpp Form.cpp main.cpp
+
+all: $(NAME);
+
+$(NAME):
+	c++ $(FLAGS) $(FILES) -o $(NAME)
+	echo $(NAME) > .gitignore
+
+run: re
+	./$(NAME)
+
+valgrind: re
+	valgrind ./$(NAME)
+
+preprocess:
+	c++ -E $(FILES) > preprocessed.hpp
+
+fclean:
+	rm -f $(NAME)
+
+re: fclean all;
+
+
+################################################################################
+# CONFIGURATION
+################################################################################
+
+.PHONY: all bonus clean fclean re valgrind run preprocess
