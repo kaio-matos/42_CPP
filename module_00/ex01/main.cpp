@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/07 22:03:32 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/17 21:22:58 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void SEARCH(PhoneBook phonebook) {
 
     phonebook.print();
 
-    std::cout << "Enter phone ID: ";
-    std::cin >> id;
+    std::cout << "Enter phone ID: " << std::ends;
+	std::getline(std::cin, id);
+
     std::cout << std::endl;
 
     id_int = std::atoi(id.c_str()) - 1;
@@ -73,19 +74,19 @@ void EXIT() {
 int	main(void) {
 	PhoneBook phonebook;
 
-	// phonebook.add(Contact("Marcos", "Sobrenome", "Fulano 2", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Lucas", "Sobrenome", "Fulano 3", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Kaio", "Sobrenome", "Fulano 4", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Matos", "Sobrenome", "Fulano 5", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Agatha", "Sobrenome", "Fulano 6", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Joana", "Sobrenome", "Fulano 7", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Maria", "Sobrenome", "Fulano 8", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Bartholomew", "Sobrenome", "CiclanoBeutrano", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Cristopher", "Sobrenome", "Fulano 9", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Guilherme", "Sobrenome", "Fulano 9", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Felipe", "Sobrenome", "Fulano 10", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Luana", "Sobrenome", "Fulano 11", "+55 11 99999-9999", "secret"));
-	// phonebook.add(Contact("Tiago", "Sobrenome", "Fulano 12", "+55 11 99999-9999", "secret"));
+	// phonebook.add(Contact("Marcos", "Sobrenome", "+55 11 99999-9999", "Fulano 2", "secret"));
+	// phonebook.add(Contact("Lucas", "Sobrenome", "+55 11 99999-9999", "Fulano 3", "secret"));
+	// phonebook.add(Contact("Kaio", "Sobrenome", "+55 11 99999-9999", "Fulano 4", "secret"));
+	// phonebook.add(Contact("Matos", "Sobrenome", "+55 11 99999-9999", "Fulano 5", "secret"));
+	// phonebook.add(Contact("Agatha", "Sobrenome", "+55 11 99999-9999", "Fulano 6", "secret"));
+	// phonebook.add(Contact("Joana", "Sobrenome", "+55 11 99999-9999", "Fulano 7", "secret"));
+	// phonebook.add(Contact("Maria", "Sobrenome", "+55 11 99999-9999", "Fulano 8", "secret"));
+	// phonebook.add(Contact("Bartholomew", "Sobrenome","+55 11 99999-9999",  "CiclanoBeutrano", "secret"));
+	// phonebook.add(Contact("Cristopher", "Sobrenome", "+55 11 99999-9999", "Fulano 9", "secret"));
+	// phonebook.add(Contact("Guilherme", "Sobrenome", "+55 11 99999-9999", "Fulano 9", "secret"));
+	// phonebook.add(Contact("Felipe", "Sobrenome", "+55 11 99999-9999", "Fulano 10", "secret"));
+	// phonebook.add(Contact("Luana", "Sobrenome", "+55 11 99999-9999", "Fulano 11", "secret"));
+	// phonebook.add(Contact("Tiago", "Sobrenome", "+55 11 99999-9999", "Fulano 12", "secret"));
 
 	askCommand(phonebook);
 	return (0);
@@ -94,8 +95,8 @@ int	main(void) {
 std::string askField(std::string fieldname) {
 	std::string result = "";
 
-    std::cout << "Enter contact " << fieldname << ": ";
-    std::cin >> result;
+    std::cout << "Enter contact " << fieldname << ": " << std::ends;
+	std::getline(std::cin, result);
 	if (result.empty())
 		return askField(fieldname);
 	return result;
@@ -105,9 +106,8 @@ void askCommand(PhoneBook phonebook) {
 	std::string command_str;
 	Commands command = COMMAND_INVALID;
 
-	std::cout << std::endl;
-    std::cout << "Enter a command: ";
-	std::cin >> command_str;
+    std::cout << "\nEnter a command: "  << std::ends;
+	std::getline(std::cin, command_str);
 
 	if (command_str.compare("ADD") == 0)
 		command = COMMAND_ADD;

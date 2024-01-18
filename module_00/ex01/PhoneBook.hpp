@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:41:31 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/07 21:47:06 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/17 20:29:31 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ class PhoneBook {
         void print(void);
 
     private:
-        Contact      contacts[8];
-        unsigned int size;
-        int          last_included_index;
+        Contact      _contacts[8];
+        unsigned int _size;
+        int          _last_included_index;
 };
 
 #endif
