@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:41:31 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/13 20:37:53 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/18 19:43:51 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ class HumanA {
         void            attack(void);
 
     private:
-        std::string     name;
-        Weapon          &weapon;
+        std::string     _name;
+        Weapon          &_weapon;
 };
 
 #endif

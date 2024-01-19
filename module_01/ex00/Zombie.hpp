@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:41:31 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/09 19:23:06 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/18 19:42:54 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Zombie {
         void announce(void);
 
     private:
-        std::string name;
+        std::string _name;
 };
 
 Zombie	*newZombie(std::string name);

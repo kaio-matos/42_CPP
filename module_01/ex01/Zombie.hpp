@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 20:41:31 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/11/09 19:46:17 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/18 19:43:12 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Zombie {
         void setName(std::string name);
 
     private:
-        std::string name;
+        std::string _name;
 };
 
 Zombie* zombieHorde( int N, std::string name );
