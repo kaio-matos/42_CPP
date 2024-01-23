@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/12/01 21:38:00 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/22 22:02:14 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ Fixed::Fixed(const int value) {
 }
 
 Fixed::Fixed(const float value) {
-    float scaled_number = value * static_cast<float>(1 << this->_fractional_bits);
+    float scaled_number = roundf(value * static_cast<float>(1 << this->_fractional_bits));
     int fixed_point_number = static_cast<int>(scaled_number);
     this->_bits = fixed_point_number;
 }
