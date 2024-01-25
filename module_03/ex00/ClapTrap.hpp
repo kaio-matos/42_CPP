@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:24 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/12/08 20:31:55 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:54:49 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,15 @@ class ClapTrap {
         void        setDamage(unsigned int amount);
 
     private:
-        std::string name;
-        int         hit_points;
-        int         energy_points;
-        int         attack_damage;
-        bool        canAct(void);
-        bool        isDead(void);
-        bool        isOutOfEnergy(void);
-        void        consumeEnergy(unsigned int amount = 1);
-        void        appendClapTrap(ClapTrap *clap_trap);
-        void        removeClapTrap(ClapTrap *clap_trap);
-        ClapTrap    *getClapTrap(const std::string name);
+        std::string _name;
+        int         _hit_points;
+        int         _energy_points;
+        int         _attack_damage;
+        bool        _canAct(std::string action);
+        void        _consumeEnergy(unsigned int amount = 1);
+        void        _appendClapTrap(ClapTrap *clap_trap);
+        void        _removeClapTrap(ClapTrap *clap_trap);
+        ClapTrap    *_getClapTrap(const std::string name);
 };
 
 #endif

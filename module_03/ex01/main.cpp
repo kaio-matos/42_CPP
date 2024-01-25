@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/12/15 21:14:24 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:24:27 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int main( void ) {
 	ClapTrap Joao("Joao");
 	ScavTrap Miles("Miles");
 	ScavTrap Lucy("Lucy");
-	ScavTrap LucyClone(Lucy);
 	std::cout << "Creating Instances done -------------------------------------------\n" <<  std::endl;
 
 	Miles.setDamage(2);
@@ -30,10 +29,6 @@ int main( void ) {
 	Lucy.guardGate();
 	Lucy.guardGate();
 	Miles.attack(Lucy.getName());
-
-	std::cout << "\n\nLucyClone attacking:" << std::endl;
-	LucyClone.attack(Lucy.getName());
-	std::cout << "LucyClone done\n\n" <<  std::endl;
 
 	Joao.attack(Lucy.getName());
 	std::cout << "Acting done  -------------------------------------------\n" << std::endl;

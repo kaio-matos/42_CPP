@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 20:26:22 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/12/15 21:16:07 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:26:34 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ ScavTrap::ScavTrap(std::string name): ClapTrap(name) {
     this->attack_damage = 20;
     this->__instance_name = "ScavTrap";
     this->is_guarding_gate = false;
-    std::cout << "ScavTrap" << " " << this->name << " instantiated" << std::endl;
+    std::cout << "ScavTrap " << this->name << " default constructor called" << std::endl;
 }
 
 ScavTrap::ScavTrap(const ScavTrap &value): ClapTrap(value) {
@@ -27,6 +27,7 @@ ScavTrap::ScavTrap(const ScavTrap &value): ClapTrap(value) {
     this->energy_points = value.energy_points;
     this->attack_damage = value.attack_damage;
     this->__instance_name = "ScavTrap";
+    std::cout << "ScavTrap " << this->name << " copy constructor called" << std::endl;
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap &rhs) {
@@ -36,28 +37,21 @@ ScavTrap& ScavTrap::operator=(const ScavTrap &rhs) {
         this->energy_points = rhs.energy_points;
         this->attack_damage = rhs.attack_damage;
     }
+    std::cout << "ScavTrap " << this->name << " copy assignment operator called" << std::endl;
     return *this;
 }
 
 ScavTrap::~ScavTrap(void) {
-    std::cout << "ScavTrap" << " " << this->name  << " instance destroyed" << std::endl;
+    std::cout << "ScavTrap " << this->name << " destructor called" << std::endl;
 }
 
 void ScavTrap::attack(const std::string &target) {
-    if (!this->canAct()) {
-        if (this->isDead()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to attack " << target << ", but he notices that he is already dead!" << std::endl;
-        } else if (this->isOutOfEnergy()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to attack " << target << ", but he notices that he is out of energy!" << std::endl;
-        }
-        return ;
-    }
+    if (this->name == target) return ;
+    if (!this->canAct(std::string("attack ").append(target))) return ;
 
     ClapTrap *found = ClapTrap::getClapTrap(target);
-    if (!found) {
-        std::cout << this->__instance_name << " " << this->name << " couldn't find " << this->__instance_name << " " << target << "!" << std::endl;
-        return;
-    }
+    if (!found) return;
+
     std::cout << this->__instance_name << " " << this->name << " attacks " << target << ", causing " << this->attack_damage << " points of damage!" << std::endl;
 
     found->takeDamage(this->attack_damage);
@@ -65,14 +59,8 @@ void ScavTrap::attack(const std::string &target) {
 }
 
 void ScavTrap::guardGate() {
-    if (!this->canAct()) {
-        if (this->isDead()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to guard gate, but he notices that he is already dead!" << std::endl;
-        } else if (this->isOutOfEnergy()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to guard gate, but he notices that he is out of energy!" << std::endl;
-        }
-        return ;
-    }
+    if (!this->canAct("guard gate")) return ;
+
     if (this->is_guarding_gate) {
         std::cout << this->__instance_name << " " << this->name << " is already guarding gate!" << std::endl;
         return ;

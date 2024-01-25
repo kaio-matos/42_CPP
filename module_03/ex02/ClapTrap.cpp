@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2023/12/14 21:39:50 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:16:58 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ ClapTrap::ClapTrap(std::string name):
     attack_damage(0)
 {
     ClapTrap::appendClapTrap(this);
-    std::cout << "ClapTrap" << " " << this->name << " instantiated" << std::endl;
+    std::cout << "ClapTrap " << this->name << " default constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap &value):
@@ -33,6 +33,7 @@ ClapTrap::ClapTrap(const ClapTrap &value):
     energy_points(value.energy_points),
     attack_damage(value.attack_damage) {
     ClapTrap::appendClapTrap(this);
+    std::cout << "ClapTrap " << this->name << " copy constructor called" << std::endl;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &rhs) {
@@ -41,30 +42,24 @@ ClapTrap &ClapTrap::operator=(const ClapTrap &rhs) {
         this->attack_damage = rhs.attack_damage;
         this->energy_points = rhs.energy_points;
         this->hit_points = rhs.hit_points;
+        ClapTrap::appendClapTrap(this);
     }
+    std::cout << "ClapTrap " << this->name << " copy assignment operator called" << std::endl;
     return *this;
 }
 
 ClapTrap::~ClapTrap(void) {
     this->removeClapTrap(this);
-    std::cout << "ClapTrap" << " " << this->name  << " instance destroyed" << std::endl;
+    std::cout << "ClapTrap " << this->name << " destructor called" << std::endl;
 }
 
 void ClapTrap::attack(const std::string &target) {
-    if (!this->canAct()) {
-        if (this->isDead()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to attack " << target << ", but he notices that he is already dead!" << std::endl;
-        } else if (this->isOutOfEnergy()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to attack " << target << ", but he notices that he is out of energy!" << std::endl;
-        }
-        return ;
-    }
+    if (this->name == target) return ;
+    if (!this->canAct(std::string("attack ").append(target))) return ;
 
     ClapTrap *found = ClapTrap::getClapTrap(target);
-    if (!found) {
-        std::cout << this->__instance_name << " " << this->name << " couldn't find " << this->__instance_name << " " << target << "!" << std::endl;
-        return;
-    }
+    if (!found) return;
+
     std::cout << this->__instance_name << " " << this->name << " attacks " << target << ", causing " << this->attack_damage << " points of damage!" << std::endl;
 
     found->takeDamage(this->attack_damage);
@@ -81,14 +76,7 @@ void ClapTrap::takeDamage(unsigned int amount) {
 }
 
 void ClapTrap::beRepaired(unsigned int amount) {
-    if (!this->canAct()) {
-        if (this->isDead()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to repair itself, but he notices that he is already dead!" << std::endl;
-        } else if (this->isOutOfEnergy()) {
-            std::cout << this->__instance_name << " " << this->name << " tries to repair itself, but he notices that he is out of energy!" << std::endl;
-        }
-        return ;
-    }
+    if (!this->canAct("repair itself")) return ;
 
     this->hit_points += amount;
     if (this->hit_points > 10) {
@@ -110,10 +98,6 @@ void ClapTrap::log(void) {
     std::cout << std::endl;
 }
 
-//
-// Getters / Setters
-//
-
 std::string ClapTrap::getName(void) const {
     return this->name;
 }
@@ -122,19 +106,18 @@ void ClapTrap::setDamage(unsigned int amount) {
     this->attack_damage = amount;
 }
 
-bool ClapTrap::canAct(void) {
-    return !this->isDead() && !this->isOutOfEnergy();
-}
-
-bool ClapTrap::isDead(void) {
-    return this->hit_points == 0;
-}
-
-//
-// Private
-//
-bool ClapTrap::isOutOfEnergy(void) {
-    return this->energy_points == 0;
+bool ClapTrap::canAct(std::string action) {
+    bool isDead = this->hit_points == 0;
+    bool isOutOfEnergy = this->energy_points == 0;
+    if (isDead) {
+        std::cout << this->name << " tries to " << action << ", but he notices that he is dead!" << std::endl;
+        return false;
+    }
+    if (isOutOfEnergy) {
+        std::cout << this->name << " tries to " << action << ", but he notices that he is out of energy!" << std::endl;
+        return false;
+    }
+    return true;
 }
 
 void ClapTrap::consumeEnergy(unsigned int amount) {
@@ -177,5 +160,6 @@ ClapTrap* ClapTrap::getClapTrap(const std::string name) {
             return clap_trap;
         }
     }
+    std::cout << "Couldn't find " << name << " " << "!" << std::endl;
     return NULL;
 }
