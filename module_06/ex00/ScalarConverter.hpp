@@ -27,6 +27,21 @@ private:
     ScalarConverter(const ScalarConverter &value);
     ScalarConverter &operator=(const ScalarConverter &value);
     ~ScalarConverter(void);
+    enum Types {
+        TYPES_INTEGER,
+        TYPES_CHAR,
+        TYPES_FLOAT,
+        TYPES_DOUBLE,
+        TYPES_PSEUDO_LITERAL,
+        TYPES_INVALID
+    };
+    static Types getType(std::string type);
+    static void printChar(char c, std::string str);
+    static void printInt(int i, std::string str);
+    static void printFloat(float f, Types type);
+    static void printDouble(double d, Types type);
+    static void printPseudo(std::string str);
+
 
 public:
     static void convert(std::string string);
