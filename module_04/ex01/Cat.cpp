@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:59:26 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/10 17:44:20 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:37:06 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ Cat::Cat(const Cat &value): Animal() {
 }
 
 Cat& Cat::operator=(const Cat &value) {
-    *this = value;
+    this->type = value.getType();
     return *this;
 }
 

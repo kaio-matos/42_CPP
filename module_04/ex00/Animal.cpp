@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:59:26 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/08 21:15:40 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:33:13 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Animal::Animal(const Animal &value) {
 }
 
 Animal& Animal::operator=(const Animal &value) {
-    *this = value;
+    this->type = value.getType();
     return *this;
 }
 

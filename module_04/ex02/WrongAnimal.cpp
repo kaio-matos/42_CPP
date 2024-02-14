@@ -21,7 +21,7 @@ WrongAnimal::WrongAnimal(const WrongAnimal &value) {
 }
 
 WrongAnimal& WrongAnimal::operator=(const WrongAnimal &value) {
-    *this = value;
+    this->type = value.getType();
     return *this;
 }
 

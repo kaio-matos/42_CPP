@@ -30,7 +30,9 @@ Brain::Brain(const Brain &value) {
 }
 
 Brain& Brain::operator=(const Brain &value) {
-    *this = value;
+    for (int i = 0; i < 100; i++) {
+        this->ideas[i] = value.ideas[i];
+    }
     return *this;
 }
 
