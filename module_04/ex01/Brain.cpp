@@ -27,12 +27,15 @@ Brain::Brain(const Brain &value) {
     for (int i = 0; i < 100; i++) {
         this->ideas[i] = new std::string(*value.ideas[i]);
     }
+    std::cout << "Copy Constructor Brain" << std::endl;
 }
 
 Brain& Brain::operator=(const Brain &value) {
     for (int i = 0; i < 100; i++) {
-        this->ideas[i] = value.ideas[i];
+        delete this->ideas[i];
+        this->ideas[i] = new std::string(*value.ideas[i]);
     }
+    std::cout << "Assignment Operator Brain" << std::endl;
     return *this;
 }
 

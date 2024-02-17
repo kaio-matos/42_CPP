@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/08 21:07:18 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:22:32 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void PDFWrongMain() {
 	const WrongAnimal* i = new WrongCat();
 
 	std::cout << i->getType() << " " << std::endl;
-	i->makeSound(); //will output the cat sound!
+	i->makeSound(); //wont output the cat sound!
 	meta->makeSound();
 
 	delete meta;

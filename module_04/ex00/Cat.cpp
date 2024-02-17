@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:59:26 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/14 20:33:27 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:09:19 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ Cat::Cat(): Animal() {
 
 Cat::Cat(const Cat &value): Animal() {
     this->type = value.type;
+    std::cout << "Copy Contructor Cat" << std::endl;
 }
 
 Cat& Cat::operator=(const Cat &value) {
-    this->type = value.getType();
+    Animal::operator=(value);
+    std::cout << "Assignment Operator Cat" << std::endl;
     return *this;
 }
 

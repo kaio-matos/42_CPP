@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:59:26 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/14 20:33:58 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:13:23 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ WrongCat::WrongCat(): WrongAnimal() {
 
 WrongCat::WrongCat(const WrongCat &value): WrongAnimal() {
     this->type = value.type;
+    std::cout << "Copy Constructor WrongCat" << std::endl;
 }
 
 WrongCat& WrongCat::operator=(const WrongCat &value) {
-    this->type = value.getType();
+    WrongAnimal::operator=(value);
+    std::cout << "Assignment Operator WrongCat" << std::endl;
     return *this;
 }
 

@@ -18,10 +18,12 @@ WrongAnimal::WrongAnimal() {
 
 WrongAnimal::WrongAnimal(const WrongAnimal &value) {
     this->type = value.type;
+    std::cout << "Copy Constructor WrongAnimal" << std::endl;
 }
 
 WrongAnimal& WrongAnimal::operator=(const WrongAnimal &value) {
     this->type = value.getType();
+    std::cout << "Assignment Operator WrongAnimal" << std::endl;
     return *this;
 }
 

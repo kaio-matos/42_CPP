@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/10 18:39:55 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:01:16 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,22 @@ void TestMultipleAnimals() {
 void TestDeepCopy() {
 	Dog *dog = new Dog();
 	Dog *copyDog = new Dog(*dog);
+	Dog dogAssignment;
+	dogAssignment = *dog;
 
-	std::cout << "Dog: " << *dog->getBrain().ideas[0] << " Copy: " << *copyDog->getBrain().ideas[0] << std::endl;
-	std::cout << "Dog: " << *dog->getBrain().ideas[99] << " Copy: " << *copyDog->getBrain().ideas[99] << std::endl;
+	std::cout << "Dog: " << dog->getBrain().ideas[0] << " Copy: " << copyDog->getBrain().ideas[0] << " Assign: " << dogAssignment.getBrain().ideas[0] << std::endl;
+	std::cout << "Dog: " << dog->getBrain().ideas[99] << " Copy: " << copyDog->getBrain().ideas[99] << " Assign: " << dogAssignment.getBrain().ideas[99] << std::endl;
 
 	delete dog;
 	delete copyDog;
 
 	Cat *cat = new Cat();
 	Cat *copyCat = new Cat(*cat);
+	Cat catAssignment;
+	catAssignment = *cat;
 
-	std::cout << "Cat: " << *cat->getBrain().ideas[0] << " Copy: " << *copyCat->getBrain().ideas[0] << std::endl;
-	std::cout << "Cat: " << *cat->getBrain().ideas[99] << " Copy: " << *copyCat->getBrain().ideas[99] << std::endl;
+	std::cout << "Cat: " << *cat->getBrain().ideas[0] << " Copy: " << *copyCat->getBrain().ideas[0] << " Assign: " << *catAssignment.getBrain().ideas[0] << std::endl;
+	std::cout << "Cat: " << *cat->getBrain().ideas[99] << " Copy: " << *copyCat->getBrain().ideas[99] << " Assign: " << *catAssignment.getBrain().ideas[99] << std::endl;
 
 	delete cat;
 	delete copyCat;

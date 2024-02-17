@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:59:26 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/14 20:37:06 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:25:40 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@ Cat::Cat(): Animal() {
     std::cout << "Contructed Cat" << std::endl;
 }
 
-Cat::Cat(const Cat &value): Animal() {
+Cat::Cat(const Cat &value): Animal(value) {
     this->type = value.type;
     this->brain = new Brain(*value.brain);
+    std::cout << "Copy Contructor Cat" << std::endl;
 }
 
 Cat& Cat::operator=(const Cat &value) {
-    this->type = value.getType();
+    Animal::operator=(value);
+    delete this->brain;
+    this->brain = new Brain(*value.brain);
+    std::cout << "Assignment Operator Cat" << std::endl;
     return *this;
 }
 
