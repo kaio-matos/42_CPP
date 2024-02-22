@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:59:04 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/16 20:43:18 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/21 21:22:13 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &value)
 
 ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &rhs)
 {
+    AForm::operator=(rhs);
     *this = rhs;
     return *this;
 }
@@ -87,19 +88,6 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
                    "    ###\\|/#o#\n"
                    "     # }|{  #\n"
                    "ejm97  }|{\n"
-                   "\n"
-                   "\n"
-                   "\n"
-                   "\n"
-                   "    &&&\n"
-                   "   &&&/&\n"
-                   " &\\/&|&&&&         ha\n"
-                   "&&&\\&|&/&&&    ,^%--- ha\n"
-                   " &&&\\|/&&&    <   \\ ha\n"
-                   "  & }}{  &   />\\_&       This leaf is\n"
-                   "    }{{     / >       perhaps *too* small\n"
-                   "             /|^^      for your purposes.\n"
-                   "ejm98       |  \\\n"
                    "\n"
                    "\n"
                    "\n"

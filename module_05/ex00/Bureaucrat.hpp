@@ -30,8 +30,6 @@ public:
     std::string getName(void) const;
     int getGrade(void) const;
 
-    friend std::ostream &operator<<(std::ostream &os, const Bureaucrat &dt);
-
     class GradeTooHighException : public std::exception
     {
     public:
@@ -50,5 +48,7 @@ private:
 
     void _validateGrade(int grade);
 };
+
+std::ostream &operator<<(std::ostream &os, const Bureaucrat &dt);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/15 20:29:53 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/21 20:19:03 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,6 @@ Form &Form::operator=(const Form &rhs)
 
 Form::~Form(void)
 {
-}
-
-std::ostream &operator<<(std::ostream &os, const Form &dt)
-{
-    os << dt.getName()
-       << " (form with required grade to sign " << dt.getGradeToSign()
-       << ", and required grade to execute " << dt.getGradeToExecute();
-    if (dt.getIsSigned())
-        os << ", that is signed)";
-    else
-        os << ", that is not signed)";
-
-    return os;
 }
 
 void Form::beSigned(Bureaucrat bureaucrat)
@@ -94,4 +81,17 @@ char const *Form::GradeTooHighException::what() const throw()
 char const *Form::GradeTooLowException::what() const throw()
 {
     return "Grade is too low";
+}
+
+std::ostream &operator<<(std::ostream &os, const Form &dt)
+{
+    os << dt.getName()
+       << " (form with required grade to sign " << dt.getGradeToSign()
+       << ", and required grade to execute " << dt.getGradeToExecute();
+    if (dt.getIsSigned())
+        os << ", that is signed)";
+    else
+        os << ", that is not signed)";
+
+    return os;
 }

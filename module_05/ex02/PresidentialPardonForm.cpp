@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 20:59:04 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/16 20:34:32 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/21 20:58:03 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &val
 
 PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPardonForm &rhs)
 {
+    AForm::operator=(rhs);
     *this = rhs;
     return *this;
 }

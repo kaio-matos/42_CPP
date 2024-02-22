@@ -20,8 +20,11 @@ valgrind: re
 preprocess:
 	c++ -E $(FILES) > preprocessed.hpp
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
+
+clean:
+	rm -f .gitignore
 
 re: fclean all;
 

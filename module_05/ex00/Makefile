@@ -16,8 +16,11 @@ run: re
 valgrind: re
 	valgrind ./$(NAME)
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
+
+clean:
+	rm -f .gitignore
 
 re: fclean all;
 

@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:24 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/15 19:56:46 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/21 20:18:25 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ public:
     std::string getName(void) const;
     int getGrade(void) const;
 
-    friend std::ostream &operator<<(std::ostream &os, const Bureaucrat &dt);
-
     class GradeTooHighException : public std::exception
     {
     public:
@@ -54,5 +52,7 @@ private:
 
     void _validateGrade(int grade);
 };
+
+std::ostream &operator<<(std::ostream &os, const Bureaucrat &dt);
 
 #endif
