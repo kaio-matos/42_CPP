@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/31 21:44:16 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/22 20:44:07 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Serializer::Serializer(const Serializer &value)
 
 Serializer &Serializer::operator=(const Serializer &rhs)
 {
-	*this = rhs;
+	(void)rhs;
 	return *this;
 }
 

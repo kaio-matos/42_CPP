@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScalarConverter.cpp                                     :+:      :+:    :+:   */
+/*   ScalarConverter.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/11 21:57:38 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:29:05 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ ScalarConverter::ScalarConverter(const ScalarConverter &value)
 
 ScalarConverter &ScalarConverter::operator=(const ScalarConverter &rhs)
 {
-	*this = rhs;
+	(void)rhs;
 	return *this;
 }
 
@@ -32,7 +32,6 @@ ScalarConverter::~ScalarConverter(void)
 }
 
 ScalarConverter::Types ScalarConverter::getType(std::string string) {
-	int dots = 0;
 	std::string pseudoLiterals[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
 
 	for (size_t i = 0; i < 6; i++) {
@@ -45,30 +44,9 @@ ScalarConverter::Types ScalarConverter::getType(std::string string) {
         return TYPES_CHAR;
 
 	if (string[0] == '+' || string[0] == '-' || std::isdigit(string[0])) {
-		bool isNumber = true;
-
-		for (size_t i = 1; i < string.length(); i++) {
-			char c = string[i];
-
-			if (i == string.length() - 1 && c == 'f') {}
-			else if (c == '.') {
-				dots++;
-			} else if (!std::isdigit(c) || dots > 1) {
-				isNumber = false;
-			}
-		}
-
-		if (isNumber) {
-			if (string.find_first_of('.') != std::string::npos) {
-				if (string[string.length() - 1] == 'f') {
-					return TYPES_FLOAT;
-				}
-
-				return TYPES_DOUBLE;
-			}
-
-			return TYPES_INTEGER;
-		}
+		if (ScalarConverter::isFloat(string)) return TYPES_FLOAT;
+		if (ScalarConverter::isDouble(string)) return TYPES_DOUBLE;
+		if (ScalarConverter::isInt(string)) return TYPES_INTEGER;
 	}
 
 	return TYPES_INVALID;
@@ -182,4 +160,57 @@ void ScalarConverter::printPseudo(std::string str)
         std::cout << "float: -inff" << std::endl;
         std::cout << "double: -inf" << std::endl;
     }
+}
+
+bool ScalarConverter::isFloat(const std::string &string) {
+	int dots = 0;
+	size_t l = string.length();
+
+	for (size_t i = 1; i < l; i++) {
+		char c = string[i];
+		bool isLast = i == l - 1;
+
+		if (isLast && c == 'f') {}
+		else if (c == '.') {
+			dots++;
+		} else if (!std::isdigit(c)) {
+			return false;
+		}
+	}
+
+	if (dots != 1) return false;
+	if (string[l - 1] != 'f') return false;
+	if (string[l - 1] == '.' || string[l - 2] == '.') return false;
+
+	return true;
+}
+
+bool ScalarConverter::isInt(const std::string &string) {
+	for (size_t i = 1; i < string.length(); i++) {
+		char c = string[i];
+
+		if (!std::isdigit(c))
+			return false;
+	}
+	return true;
+}
+
+bool ScalarConverter::isDouble(const std::string &string) {
+	int dots = 0;
+	size_t l = string.length();
+
+	for (size_t i = 1; i < l; i++) {
+		char c = string[i];
+
+		if (c == '.') {
+			dots++;
+		} else if (!std::isdigit(c)) {
+			return false;
+		}
+	}
+
+	if (dots != 1) return false;
+	if (string[l - 1] == '.') return false;
+
+	return true;
 }
