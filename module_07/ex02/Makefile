@@ -7,7 +7,7 @@ FILES=main.cpp
 all: $(NAME);
 
 $(NAME):
-	c++ $(FLAGS) $(FILES) -o $(NAME)
+	c++ $(FLAGS) -I . $(FILES) -o $(NAME)
 	echo $(NAME) > .gitignore
 
 run: re
@@ -16,7 +16,10 @@ run: re
 valgrind: re
 	valgrind ./$(NAME)
 
-fclean:
+clean:
+	rm -f .gitignore
+
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all;

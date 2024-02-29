@@ -6,11 +6,12 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/05 20:30:01 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:58:24 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Array.hpp"
+#include <ostream>
 
 template<typename T>
 void printArray(std::string name, Array<T> array) {
@@ -19,6 +20,16 @@ void printArray(std::string name, Array<T> array) {
         std::cout << array[i] << " ";
     }
     std::cout << std::endl;
+}
+
+typedef struct Complex {
+    std::string name;
+    int         age;
+} Complex;
+
+std::ostream& operator<<(std::ostream& os, Complex complex) {
+    os << "[Name: '" << complex.name << "' Age: '" << complex.age << "']";
+    return os;
 }
 
 int main() {
@@ -35,19 +46,26 @@ int main() {
         std::cout << "Initialized Array size: " << initializedArray.size() << std::endl;
         printArray("Initialized Array:", initializedArray);
 
-        // Copy constructor
         Array<int> originalArray(3);
         originalArray[0] = 1;
         originalArray[1] = 2;
         originalArray[2] = 3;
 
+        // Copy constructor
+        Array<int> copiedArray(originalArray);
+        copiedArray[1] = 112;
         // Assignment operator
-        Array<int> copiedArray = originalArray;
-        copiedArray[1] = 99;
+        Array<int> assignedArray = originalArray;
+        assignedArray[1] = 99;
 
         printArray("Original Array:", originalArray);
-
         printArray("Copied Array:", copiedArray);
+        printArray("Assigned Array:", assignedArray);
+
+        Array<Complex> complexArray(3);
+        Complex bobby = { .name = "Bobby", .age = 33 };
+        complexArray[2] = bobby;
+        printArray("Complex Array:", complexArray);
 
         // Trying to access an empty array should throw an error
         // std::cout << emptyArray[0] << std::endl;

@@ -6,41 +6,12 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/02 19:13:30 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:18:56 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "whatever.hpp"
-
-template<typename T>
-T const &max(T const & a, T const & b) {
-    if (a > b) {
-        return a;
-    } else if (a == b) {
-		return b;
-	}
-    return b;
-}
-
-template<typename T>
-T const &min(T const & a, T const & b) {
-    if (a < b) {
-        return a;
-    } else if (a == b) {
-		return b;
-	}
-    return b;
-}
-
-template<typename T>
-void swap(T &a, T &b) {
-	T temp = a;
-	a = b;
-	b = temp;
-}
-
-
 
 int main(void)
 {
