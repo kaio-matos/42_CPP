@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:36:33 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/06 21:33:38 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:49:19 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ Span::~Span(void) {}
 
 Span::Span(unsigned int n): _array(std::vector<int>()), _max(n) {}
 
-Span::Span(const Span &value): _array(std::vector<int>()), _max(0) {
-	*this = value;
-}
+Span::Span(const Span &value): _array(std::vector<int>(value._array)), _max(value._max) {}
 
 Span &Span::operator=(const Span &value) {
 	this->_array = std::vector<int>(value._array);

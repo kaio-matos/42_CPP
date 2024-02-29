@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 21:18:22 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/06 21:34:21 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/29 20:11:56 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ public:
 
     ~MutantStack<T>(void) {}
 
-    MutantStack<T>(const MutantStack<T> &value): std::stack<T>() {
-        *this = value;
+    MutantStack<T>(const MutantStack<T> &value): std::stack<T>(value) {
+        this->c = value.c;
     }
 
     MutantStack<T> &operator=(const MutantStack<T> &value) {
+        std::stack<T>::operator=(value);
         this->c = value.c;
         return (*this);
     }

@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:36:30 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/06 21:17:11 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:52:35 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,20 @@ public:
 	unsigned int longestSpan(void);
 
 	template <typename T>
-	void addRange(T begin, T end);
+	void addRange(T begin, T end) {
+		unsigned int space = this->_max - this->_array.size();
+
+		if (std::distance(begin, end) > space)
+			throw std::runtime_error("Not enough capacity");
+		while (begin != end) {
+			this->addNumber(*begin);
+			begin++;
+		}
+	}
 
 private:
 	std::vector<int> _array;
 	unsigned int     _max;
 };
-
-#include "Span.tpp"
 
 #endif
