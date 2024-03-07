@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/01/31 22:37:37 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:22:42 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Base::~Base(void)
 {
 }
 
-Base *Base::generate(void) {
+Base *generate(void) {
     std::srand(time(NULL));
     int random = std::rand() % 3 + 1;
 
@@ -36,7 +36,7 @@ Base *Base::generate(void) {
     return new C();
 }
 
-void Base::identify(Base* p) {
+void identify(Base* p) {
     if (dynamic_cast<A*>(p) != NULL) {
         std::cout << "By Pointer   -> Type: A class " << std::endl;
         return;
@@ -51,7 +51,7 @@ void Base::identify(Base* p) {
     }
 }
 
-void Base::identify(Base& p) {
+void identify(Base& p) {
     try {
         dynamic_cast<A&>(p);
         std::cout << "By Reference -> Type: A class " << std::endl;

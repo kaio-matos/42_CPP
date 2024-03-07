@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:24 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/26 21:31:09 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:36:13 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ private:
     static void printInt(int i, std::string str);
     static void printFloat(float f, Types type);
     static void printDouble(double d, Types type);
-    static void printPseudo(std::string str);
 
     static bool isFloat(const std::string &string);
     static bool isInt(const std::string &string);
     static bool isDouble(const std::string &string);
+    static bool isPseudo(const std::string &string);
 
 
 public:

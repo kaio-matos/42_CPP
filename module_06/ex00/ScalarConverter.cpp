@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:28 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/26 21:29:05 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:05:29 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,7 @@ ScalarConverter::~ScalarConverter(void)
 }
 
 ScalarConverter::Types ScalarConverter::getType(std::string string) {
-	std::string pseudoLiterals[6] = {"nan", "+inf", "-inf", "nanf", "+inff", "-inff"};
-
-	for (size_t i = 0; i < 6; i++) {
-		if (string == pseudoLiterals[i]) {
-			return TYPES_PSEUDO_LITERAL;
-		}
-	}
+	if (ScalarConverter::isPseudo(string)) return TYPES_PSEUDO_LITERAL;
 
 	if (string.length() == 1 && !std::isdigit(string[0]))
         return TYPES_CHAR;
@@ -97,7 +91,12 @@ void ScalarConverter::convert(std::string string) {
 		break;
 	}
 	case TYPES_PSEUDO_LITERAL: {
-		printPseudo(string);
+		float f = std::strtof(string.c_str(), NULL);
+
+		printChar(static_cast<char>(f), string);
+		printInt(static_cast<int>(f), string);
+		printFloat(f, type);
+		printDouble( static_cast<double>(f), type);
 		break;
 	}
 	case TYPES_INVALID: {
@@ -109,7 +108,7 @@ void ScalarConverter::convert(std::string string) {
 
 void ScalarConverter::printChar(char c, std::string str)
 {
-    if (std::atol(str.c_str()) < -128 || std::atol(str.c_str()) > 127)
+    if (std::atol(str.c_str()) < -128 || std::atol(str.c_str()) > 127 || isPseudo(str))
         std::cout << "char: impossible" << std::endl;
     else if (!std::isprint(c))
         std::cout << "char: Non displayable" << std::endl;
@@ -119,7 +118,7 @@ void ScalarConverter::printChar(char c, std::string str)
 
 void ScalarConverter::printInt(int i, std::string str)
 {
-    if (std::atol(str.c_str()) < std::numeric_limits<int>::min() || std::atol(str.c_str()) > std::numeric_limits<int>::max())
+    if (std::atol(str.c_str()) < std::numeric_limits<int>::min() || std::atol(str.c_str()) > std::numeric_limits<int>::max() || isPseudo(str))
         std::cout << "int: impossible" << std::endl;
     else
         std::cout << "int: " << i << std::endl;
@@ -139,27 +138,6 @@ void ScalarConverter::printDouble(double d, ScalarConverter::Types type)
         std::cout << "double: impossible" << std::endl;
     else
         std::cout << "double: " << std::fixed << std::setprecision(1) << d << std::endl;
-}
-
-void ScalarConverter::printPseudo(std::string str)
-{
-    std::cout << "char: impossible" << std::endl;
-    std::cout << "int: impossible" << std::endl;
-    if (str == "nanf" || str == "nan")
-    {
-        std::cout << "float: nanf" << std::endl;
-        std::cout << "double: nan" << std::endl;
-    }
-    else if (str == "+inff" || str == "+inf")
-    {
-        std::cout << "float: +inff" << std::endl;
-        std::cout << "double: +inf" << std::endl;
-    }
-    else if (str == "-inff" || str == "-inf")
-    {
-        std::cout << "float: -inff" << std::endl;
-        std::cout << "double: -inf" << std::endl;
-    }
 }
 
 bool ScalarConverter::isFloat(const std::string &string) {
@@ -213,4 +191,15 @@ bool ScalarConverter::isDouble(const std::string &string) {
 	if (string[l - 1] == '.') return false;
 
 	return true;
+}
+
+bool ScalarConverter::isPseudo(const std::string &string) {
+	std::string pseudoLiterals[8] = {"nan", "+inf", "-inf", "inf", "nanf", "+inff", "inff", "-inff"};
+
+	for (size_t i = 0; i < 8; i++) {
+		if (string == pseudoLiterals[i]) {
+			return true;
+		}
+	}
+	return false;
 }

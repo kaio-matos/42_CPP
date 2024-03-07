@@ -15,15 +15,25 @@ run: re
 
 test: re
 	./$(NAME) 0
+	@echo
 	./$(NAME) nan
+	@echo
 	./$(NAME) 42.0f
+	@echo
 	./$(NAME) 0003.4f
+	@echo
 	./$(NAME) "2222392 a"
+	@echo
 	./$(NAME) 256
+	@echo
 	./$(NAME) -1
+	@echo
 	./$(NAME) 123456.3232
+	@echo
 	./$(NAME) -123456.3232
+	@echo
 	./$(NAME) +inf
+	@echo
 	./$(NAME) -inf
 
 valgrind: re
