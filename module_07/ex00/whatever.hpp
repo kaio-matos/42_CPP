@@ -6,12 +6,13 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:24 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/28 21:18:53 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:19:57 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WHATEVER_H
 #define WHATEVER_H
+#include <iostream>
 
 template<typename T>
 T const &max(T const & a, T const & b) {

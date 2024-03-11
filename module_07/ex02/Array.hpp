@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:41:24 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/29 20:09:33 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:36:46 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 template<typename T>
 class Array {
@@ -30,6 +32,7 @@ public:
     }
 
     Array<T> &operator=(const Array<T> &value){
+        if (this == &value) return *this;
         if (this->_list) delete [] this->_list;
 
         this->_list = new T[value._length];
@@ -45,7 +48,14 @@ public:
         this->_length = 0;
     }
 
-    T &operator[](size_t index) const {
+    T &operator[](size_t index) {
+        if (index >= this->_length) {
+            throw std::exception();
+        }
+        return this->_list[index];
+    }
+
+	const T& operator[](size_t index) const {
         if (index >= this->_length) {
             throw std::exception();
         }

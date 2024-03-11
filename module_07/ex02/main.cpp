@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/28 19:58:24 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/07 21:32:35 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int main() {
         Array<int> copiedArray(originalArray);
         copiedArray[1] = 112;
         // Assignment operator
-        Array<int> assignedArray = originalArray;
+        Array<int> assignedArray;
+        assignedArray = originalArray;
         assignedArray[1] = 99;
 
         printArray("Original Array:", originalArray);
@@ -67,6 +68,8 @@ int main() {
         complexArray[2] = bobby;
         printArray("Complex Array:", complexArray);
 
+        // const Array<int> constant(10);
+        // constant[0] = 10; // this shouldn't be allowed
         // Trying to access an empty array should throw an error
         // std::cout << emptyArray[0] << std::endl;
     } catch (const std::exception& e) {
