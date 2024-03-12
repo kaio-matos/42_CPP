@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:36:33 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/29 19:49:19 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:06:27 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ Span::Span(unsigned int n): _array(std::vector<int>()), _max(n) {}
 Span::Span(const Span &value): _array(std::vector<int>(value._array)), _max(value._max) {}
 
 Span &Span::operator=(const Span &value) {
-	this->_array = std::vector<int>(value._array);
-	this->_max = value._max;
+	if (this != &value) {
+		this->_array = std::vector<int>(value._array);
+		this->_max = value._max;
+	}
 	return (*this);
 }
 
@@ -40,19 +42,18 @@ void Span::addNumber(int n) {
 unsigned int Span::shortestSpan(void) {
 	std::vector<int> copy(this->_array);
 	std::vector<int>::iterator it;
-	int diff = 0;
+	unsigned int span;
 
 	if (this->_array.size() < 2)
 		throw std::runtime_error("Insufficient elements");
 
 	std::sort(copy.begin(), copy.end());
-	for (it = copy.begin(); it != copy.end(); it++) {
-		int result = abs(*(it + 1) - *it);
-
-		if (diff == 0 || result < diff)
-			diff = result;
+	it = copy.begin() + 1;
+	span = *it - *(it - 1);
+	for (; it != copy.end(); it++) {
+		span = std::min(span, static_cast<unsigned int>(*it - *(it - 1)));
 	}
-	return (diff);
+	return (span);
 }
 
 unsigned int Span::longestSpan(void) {

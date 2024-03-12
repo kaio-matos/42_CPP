@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:36:30 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/29 19:52:35 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:10:24 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 #include <exception>
 #include <vector>
 #include <iostream>
+#include <ctime>
+#include <list>
+#include <vector>
 
 class Span {
 public:

@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 21:18:22 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/29 20:11:56 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:36:17 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define MUTANTSTACK_HPP
 
 #include <stack>
+#include <iostream>
+#include <vector>
 
 template <typename T>
 class MutantStack : public std::stack<T> {
@@ -22,13 +24,10 @@ public:
 
     ~MutantStack<T>(void) {}
 
-    MutantStack<T>(const MutantStack<T> &value): std::stack<T>(value) {
-        this->c = value.c;
-    }
+    MutantStack<T>(const MutantStack<T> &value): std::stack<T>(value) {}
 
     MutantStack<T> &operator=(const MutantStack<T> &value) {
         std::stack<T>::operator=(value);
-        this->c = value.c;
         return (*this);
     }
 

@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/06 20:35:32 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:19:33 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ int main(void)
 	std::cout << "List   " << *easyfind(list, 2) << std::endl;
 	std::cout << "Deque  " << *easyfind(deque, 200) << std::endl;
 
-	// error
-	// std::cout << *easyfind(list, 33) << std::endl;
+	try {
+		std::cout << *easyfind(list, 33) << std::endl;
+	} catch (std::exception &e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
 
 	return 0;
 }

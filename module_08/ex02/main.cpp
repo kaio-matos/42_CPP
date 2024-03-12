@@ -6,13 +6,11 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/28 20:37:18 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:36:13 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MutantStack.hpp"
-#include <iostream>
-#include <vector>
 
 int main()
 {
