@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/09 20:58:16 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:40:01 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 #include <stack>
 #include <sstream>
 #include <cstdlib>
+#include <stdlib.h>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <dirent.h>
 
 class RPN {
 
@@ -29,6 +34,9 @@ public:
 
 private:
 	std::string _rawExpression;
+
+	bool _assert(bool exp) const;
+	bool _getNumber(std::string::iterator &ch, std::string::iterator end, int &value) const;
 };
 
 #endif

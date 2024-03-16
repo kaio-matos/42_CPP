@@ -16,7 +16,10 @@ run: re
 valgrind: re
 	valgrind ./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
 
-fclean:
+clean:
+	rm -f .gitignore
+
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all;

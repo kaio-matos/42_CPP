@@ -6,19 +6,14 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/08 21:45:39 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/13 20:38:18 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-#include <stdlib.h>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <dirent.h>
 
 std::map<std::string, double> readDatabasePrices(std::string filename, char separator);
-void readFileAndConvert(BitcoinExchange exchange, std::string filename, char separator);
+bool readFileAndConvert(BitcoinExchange exchange, std::string filename, char separator);
 
 int main(int argc, char **argv)
 {
@@ -29,9 +24,15 @@ int main(int argc, char **argv)
 
   std::map<std::string, double> database(readDatabasePrices("data.csv", ','));
 
+  if (database.empty()) {
+    return 1;
+  }
+
   BitcoinExchange Exchange(database);
 
-  readFileAndConvert(Exchange, argv[1], '|');
+  if (!readFileAndConvert(Exchange, argv[1], '|')) {
+    return 1;
+  };
 
 	return 0;
 }
@@ -45,24 +46,38 @@ void trimstr(std::string &str) {
 	str.erase(end + 1).erase(0, start);
 }
 
+bool isFloat(std::string string) {
+    trimstr(string);
+    std::istringstream iss(string);
+    float f;
+    iss >> f;
+    return iss.eof() && !iss.fail();
+}
+
+bool validateFileOpening(std::ifstream &file, std::string filename) {
+  if (file.fail()) {
+    std::cerr << "Error opening the file: " << filename << std::endl;
+    file.close();
+    return false;
+  }
+
+  DIR *dir = opendir(filename.c_str());
+
+  if (dir != NULL) {
+    std::cerr << "Error opening the file: " << filename << std::endl;
+    closedir(dir);
+    return false;
+  }
+  return true;
+}
+
 std::map<std::string, double> readDatabasePrices(std::string filename, char separator) {
   std::ifstream file(filename.c_str());
   std::map<std::string, double> result;
   std::string line, date, price;
 
-  if (file.fail()) {
-    std::cerr << "Error opening the file" << std::endl;
-    file.close();
-    exit(1);
-  }
-
-
-  DIR *dir = opendir(filename.c_str());
-
-  if (dir != NULL) {
-    std::cerr << "Error opening the file" << std::endl;
-    closedir(dir);
-    exit(1);
+   if (!validateFileOpening(file, filename)) {
+    return result;
   }
 
   std::getline(file, line); // ignore first line
@@ -87,25 +102,19 @@ std::map<std::string, double> readDatabasePrices(std::string filename, char sepa
   return result;
 }
 
-void readFileAndConvert(BitcoinExchange exchange, std::string filename, char separator) {
+bool readFileAndConvert(BitcoinExchange exchange, std::string filename, char separator) {
   std::ifstream file(filename.c_str());
   std::string line, date, amount;
 
-  if (file.fail()) {
-    std::cerr << "Error opening the file" << std::endl;
-    file.close();
-    exit(1);
-  }
-
-  DIR *dir = opendir(filename.c_str());
-
-  if (dir != NULL) {
-    std::cerr << "Error opening the file" << std::endl;
-    closedir(dir);
-    exit(1);
+  if (!validateFileOpening(file, filename)) {
+    return false;
   }
 
   std::getline(file, line); // ignore first line
+
+  if (line != "date | value") {
+    std::cout << "Error: invalid header => " << line << std::endl;
+  }
 
   while (std::getline(file, line)) {
     if (line.empty()) continue;
@@ -119,8 +128,9 @@ void readFileAndConvert(BitcoinExchange exchange, std::string filename, char sep
     }
 
     std::getline(ss, amount);
+    trimstr(amount);
 
-    if (ss.fail()) {
+    if (ss.fail() || !isFloat(amount)) {
   		std::cout << "Error: bad input => " << line << std::endl;
       continue;
     }
@@ -129,4 +139,5 @@ void readFileAndConvert(BitcoinExchange exchange, std::string filename, char sep
   }
 
   file.close();
+  return true;
 }

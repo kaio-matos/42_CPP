@@ -14,9 +14,12 @@ run: re
 	./$(NAME) input.txt
 
 valgrind: re
-	valgrind ./$(NAME) input.txt
+	valgrind -q ./$(NAME) input.txt
 
-fclean:
+clean:
+	rm -f .gitignore
+
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all;

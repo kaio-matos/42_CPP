@@ -6,12 +6,11 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/02/08 21:06:32 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/13 21:28:20 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-#include <ctime>
 
 BitcoinExchange::BitcoinExchange(std::map<std::string, double> database): _database(database) {}
 
@@ -27,7 +26,7 @@ BitcoinExchange::~BitcoinExchange(void) {}
 
 
 void BitcoinExchange::convert(std::string date, double amount) const {
-	if (!BitcoinExchange::isValidAmount(amount) || !BitcoinExchange::isValidDate(date)){
+	if (!isValidAmount(amount) || !isValidDate(date)){
 		return ;
 	}
 
@@ -47,23 +46,48 @@ void BitcoinExchange::convert(std::string date, double amount) const {
 	}
 }
 
-bool BitcoinExchange::isValidAmount(double amount) {
+bool BitcoinExchange::isValidAmount(double amount) const {
 	if (amount < 0) {
-		std::cout << "Error: not a positive number" << std::endl;
+		std::cout << "Error: not a positive number." << std::endl;
 		return false;
 	}
 
 	if (amount > 1000) {
-		std::cout << "Error: too large number" << std::endl;
+		std::cout << "Error: too large number." << std::endl;
 		return false;
 	}
 	return true;
 }
 
-bool BitcoinExchange::isValidDate(std::string date) {
-	std::tm tm = {};
-	if (!strptime(date.c_str(), "%Y-%m-%d", &tm)) {
+bool BitcoinExchange::isValidDate(std::string date) const {
+	std::tm Date = {};
+
+	if (!strptime(date.c_str(), "%Y-%m-%d", &Date)) {
 		std::cout << "Error: bad input => " << date << std::endl;
+		return false;
+	}
+
+	std::tm firstDate = {};
+	std::map<std::string, double>::const_iterator first = this->_database.begin();
+
+	strptime(first->first.c_str(),"%Y-%m-%d", &firstDate);
+
+	bool isBeforeYear = (Date.tm_year + TM_YEAR_BASE) < (firstDate.tm_year + TM_YEAR_BASE);
+	bool isSameYear = (Date.tm_year + TM_YEAR_BASE) == (firstDate.tm_year + TM_YEAR_BASE);
+	bool isBeforeMonth = Date.tm_mon < firstDate.tm_mon;
+	bool isSameMonth = Date.tm_mon == firstDate.tm_mon;
+	bool isBeforeDay = Date.tm_mday < firstDate.tm_mday;
+
+	if (isBeforeYear) {
+		std::cout << "Error: bad input => " << date << " is before than first entry " << first->first << std::endl;
+		return false;
+	}
+	if (isSameYear && isBeforeMonth) {
+		std::cout << "Error: bad input => " << date << " is before than first entry " << first->first << std::endl;
+		return false;
+	}
+	if (isSameMonth && isBeforeDay) {
+		std::cout << "Error: bad input => " << date << " is before than first entry " << first->first << std::endl;
 		return false;
 	}
 
