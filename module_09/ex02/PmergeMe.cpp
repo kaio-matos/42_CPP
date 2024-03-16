@@ -61,11 +61,12 @@ std::list<PmergeMe::ull> PmergeMe::sortAsList(void)
 template <typename T>
 void PmergeMe::_insertionsort(T begin, T end)
 {
-	for (T it = begin; it != end; ++it)
+	for (T it = begin; it != end; it++)
 	{
-		T temp = it;
-		std::advance(temp, 1);
-		std::rotate(std::upper_bound(begin, it, *it), it, temp);
+		T next = it;
+		std::advance(next, 1);
+		T found = std::upper_bound(begin, it, *it);
+		std::rotate(found, it, next);
 	}
 }
 
