@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/14 19:39:37 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:59:19 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ bool RPN::_getNumber(std::string::iterator &ch, std::string::iterator end, int &
 
 	if (!std::isdigit(*ch)) return false;
 
-	while (ch != end && std::isdigit(*ch)) {
+	while (ch != end && *ch != ' ') {
+		if (!std::isdigit(*ch)) {
+			return false;
+		}
 		str_number += *ch;
 		ch++;
 	}

@@ -1,7 +1,7 @@
 const { execFile } = require('child_process')
 const EXECUTABLE = './RPN'
 const VALGRIND_EXECUTABLE = 'valgrind'
-const VALGRIND_FLAGS = ['--leak-check=full', '--error-exitcode=1']
+const VALGRIND_FLAGS = ['--leak-check=full', '--error-exitcode=2']
 
 function executeAsyncFile(file, args, callback = () => { }) {
     return new Promise((resolve, reject) => {
@@ -21,14 +21,14 @@ async function testProgram(expression, expected) {
             console.log('\x1b[31m%s\x1b[0m', `[FAILED]   Received '${result}' | Expected: '${expected}'`)
         }
     }
+    console.log(`EXPRESSION '${expression}'`)
 
     try {
-        let result = String(await executeAsyncFile(EXECUTABLE, expression ? [expression] : undefined))
+        let result = String(await executeAsyncFile(EXECUTABLE, [expression]))
         result = result.replace('\n', '')
-        console.log(`EXPRESSION ${expression}`)
         checkSuccess(result)
     } catch (error) {
-        const result = error.message.replace('Command failed: ./RPN\n', '').replace('\n', '')
+        const result = error.message.replace('Command failed: ./RPN ', '').replace('\n', '').replace('\n', '')
         checkSuccess(result)
     }
 
@@ -36,7 +36,7 @@ async function testProgram(expression, expected) {
         await executeAsyncFile(VALGRIND_EXECUTABLE, [...VALGRIND_FLAGS, EXECUTABLE, expression])
         console.log('\x1b[32m%s\x1b[0m', `[SUCCESS]  Memory Check`)
     } catch (error) {
-        if (error.code === 1) {
+        if (error.code === 2) {
             console.log('\x1b[31m%s\x1b[0m', `[FAILED]   Memory Check`)
         }
     }
@@ -45,7 +45,9 @@ async function testProgram(expression, expected) {
 }
 
 async function init() {
+    await testProgram("undefined", "Error")
     await testProgram("", "Bad arguments")
+    await testProgram('""', "Error")
     await testProgram("1", "1")
     await testProgram("1321", "1321")
     await testProgram("8 9 * 9 - 9 - 9 - 4 - 1 +", "42")
@@ -75,6 +77,8 @@ async function init() {
     await testProgram("1 3 21 / * * / / / /", "Error") // invalid expression
     await testProgram("2 2 + +", "Error") // invalid expression
     await testProgram("10 [10] *", "Error") // invalid expression
+    await testProgram("3 3g +", "Error") // invalid expression
+    await testProgram("11 13x +", "Error") // invalid expression
     await testProgram("[10 10 *", "Error") // invalid expression
     await testProgram("d10 10 *", "Error") // invalid expression
     await testProgram("10 10 *a", "Error") // invalid expression

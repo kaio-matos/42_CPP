@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/13 21:28:20 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:39:51 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,18 @@ bool BitcoinExchange::isValidDate(std::string date) const {
 		return false;
 	}
 
+	bool isLeapYear = ((Date.tm_year % 400 == 0) || ((Date.tm_year % 100 != 0) && (Date.tm_year % 4 == 0)));
+
+	if (!isLeapYear && Date.tm_mon == 1 && Date.tm_mday == 29) {
+		std::cout << "Error: bad input => " << date << std::endl;
+		return false;
+	}
+
+	if (Date.tm_mon > 31) {
+		std::cout << "Error: bad input => " << date << std::endl;
+		return false;
+	}
+
 	std::tm firstDate = {};
 	std::map<std::string, double>::const_iterator first = this->_database.begin();
 
@@ -86,7 +98,7 @@ bool BitcoinExchange::isValidDate(std::string date) const {
 		std::cout << "Error: bad input => " << date << " is before than first entry " << first->first << std::endl;
 		return false;
 	}
-	if (isSameMonth && isBeforeDay) {
+	if (isSameYear && isSameMonth && isBeforeDay) {
 		std::cout << "Error: bad input => " << date << " is before than first entry " << first->first << std::endl;
 		return false;
 	}
