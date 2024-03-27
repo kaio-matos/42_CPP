@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/15 22:54:57 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:17:03 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,14 @@ public:
 	T getUnsorted(void);
 
 private:
-	static const ull _GROUPS_SIZE = 5;
 	char **_numbers;
 	template <typename T>
 	T _parse(void);
 
-	template <typename Iterator>
-	void _sort(Iterator begin, Iterator end);
-	template <typename T>
-	void _insertionsort(T begin, T end);
-
-	void _merge(
-		std::vector<ull>::iterator start,
-		std::vector<ull>::iterator mid,
-		std::vector<ull>::iterator end);
-	void _merge(
-		std::list<ull>::iterator start,
-		std::list<ull>::iterator mid,
-		std::list<ull>::iterator end);
+	template<typename Iterator>
+	void merge_insertion_sort_impl(Iterator first, Iterator last);
+	template<typename Iterator>
+	void merge_insertion_sort(Iterator first, Iterator last);
 };
 
 template <typename T>

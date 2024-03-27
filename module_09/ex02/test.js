@@ -1,7 +1,7 @@
 const { execFile } = require('child_process')
 const EXECUTABLE = './PmergeMe'
 const VALGRIND_EXECUTABLE = 'valgrind'
-const VALGRIND_EXIT_CODE = 33224
+const VALGRIND_EXIT_CODE = 200
 const VALGRIND_FLAGS = ['--leak-check=full', '--error-exitcode=' + VALGRIND_EXIT_CODE]
 const COLORS = {
     GREEN: '\x1b[32m%s\x1b[0m',
@@ -104,7 +104,7 @@ async function init() {
 
 
     for (let i = 1; i <= 10001; i += 100) {
-        console.log(COLORS.BLUE, `[INFO]    Size: ${i}`)
+        console.log(COLORS.BLUE, `[INFO]     Size: ${i}`)
         const { arguments, expected } = generateRandomArguments(i)
         await test(arguments, expected)
     }

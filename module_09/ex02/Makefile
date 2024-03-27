@@ -16,6 +16,9 @@ run: re
 valgrind: re
 	valgrind ./$(NAME) `shuf -i 1-100000 -n 100 | tr "\n" " "`
 
+debug:
+	@c++ $(FILES) -o $(NAME)
+
 clean:
 	rm -f .gitignore
 
