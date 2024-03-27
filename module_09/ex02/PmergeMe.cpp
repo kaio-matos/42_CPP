@@ -6,55 +6,17 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/26 21:02:57 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:42:21 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
-#include <algorithm>
-#include <cstddef>
-#include <iterator>
-
-template<typename Iterator>
-Iterator _next(Iterator it, int n = 1) {
-	Iterator next = it;
-	std::advance(next, n);
-	return next;
-}
-
-template<typename Iterator>
-void printIt(std::string name, Iterator start, Iterator end) {
-	std::cout << name << "\n";
-	for (Iterator it = start; it != end; std::advance(it, 1)) {
-		std::cout << **it << ", ";
-	}
-	std::cout << "\n" << std::endl;
-}
-
-template<typename Iterator>
-void printItPair(std::string name, Iterator start, Iterator end) {
-	int i = 0;
-	std::cout << name << "\n";
-	for (Iterator it = start; it != end; std::advance(it, 1)) {
-		if (i % 2 == 0) {
-			std::cout << "[" << *it->value << ", ";
-		}
-		else if (i % 2 != 0) {
-			std::cout << *it->value << "]";
-		}
-		i++;
-	}
-	std::cout << "\n" << std::endl;
-}
-
-
 
 PmergeMe::PmergeMe(char **numbers) : _numbers(numbers) {}
 
 PmergeMe::PmergeMe(const PmergeMe &value) : _numbers(value._numbers) {}
 
-PmergeMe &PmergeMe::operator=(const PmergeMe &value)
-{
+PmergeMe &PmergeMe::operator=(const PmergeMe &value) {
 	this->_numbers = value._numbers;
 	return *this;
 }
@@ -62,13 +24,11 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &value)
 PmergeMe::~PmergeMe(void) {}
 
 template <typename T>
-T PmergeMe::_parse(void)
-{
+T PmergeMe::_parse(void) {
 	T result;
 	char **numbers = this->_numbers;
 
-	while (*numbers)
-	{
+	while (*numbers) {
 		result.push_back(std::atoi(*numbers));
 		numbers++;
 	}
@@ -76,237 +36,100 @@ T PmergeMe::_parse(void)
 }
 
 template <typename T>
-T PmergeMe::getUnsorted(void)
-{
+T PmergeMe::getUnsorted(void) {
 	return this->_parse<T>();
 }
 
-template<class InputIt, class OutputIt>
-OutputIt mmove(InputIt first, InputIt last, OutputIt d_first)
-{
-    for (; first != last; ++d_first, ++first)
-        *d_first = *first;
-
-    return d_first;
-}
-
-std::vector<PmergeMe::ull> PmergeMe::sortAsVector(void)
-{
+std::vector<PmergeMe::ull> PmergeMe::sortAsVector(void) {
 	std::vector<ull> unsorted = this->getUnsorted<std::vector<ull> >();
-	this->merge_insertion_sort<std::vector<ull>::iterator >(unsorted.begin(), unsorted.end());
+	this->_sort<std::vector<ull>::iterator >(unsorted.begin(), unsorted.end());
 	return unsorted;
 }
 
-
-std::list<PmergeMe::ull> PmergeMe::sortAsList(void)
-{
+std::list<PmergeMe::ull> PmergeMe::sortAsList(void) {
 	std::list<ull> unsorted = this->getUnsorted<std::list<ull> >();
-	this->merge_insertion_sort<std::list<ull>::iterator >(unsorted.begin(), unsorted.end());
+	this->_sort<std::list<ull>::iterator >(unsorted.begin(), unsorted.end());
 	return unsorted;
 }
 
 template<typename Iterator>
-class group_iterator
-{
-    private:
+void PmergeMe::_sortImplementation(Iterator first, Iterator last) {
 
-        Iterator _it;
-        std::size_t _size;
+    std::size_t size = std::distance(first, last);
+    if (size < 2) return;
 
-    public:
-        typedef std::random_access_iterator_tag iterator_category;
-        typedef Iterator iterator_type;
-        typedef typename std::iterator_traits<Iterator>::value_type value_type;
-        typedef typename std::iterator_traits<Iterator>::difference_type difference_type;
-        typedef typename std::iterator_traits<Iterator>::pointer pointer;
-        typedef typename std::iterator_traits<Iterator>::reference reference;
+    bool hasStray = (size % 2 != 0);
 
-        group_iterator(): _it(Iterator()), _size(0) {};
+    Iterator end = hasStray ? moveIt(last, -1) : last;
+    for (Iterator it = first ; it != end ; it += 2) {
+        if (it[1] < it[0]) {
+            swapGroupIterator(it, it + 1);
+		}
+    }
 
-        group_iterator(Iterator it, std::size_t size):
-            _it(it),
-            _size(size)
-        {}
+    _sort(
+        makeGroupIterator(first, 2),
+        makeGroupIterator(end, 2)
+    );
 
-        iterator_type base() const
-        {
-            return _it;
-        }
-
-        std::size_t size() const
-        {
-            return _size;
-        }
-
-        reference operator*() const
-        {
-            return *_next(_it, _size - 1);
-        }
-
-        pointer operator->() const
-        {
-            return &(operator*());
-        }
-
-        group_iterator& operator++()
-        {
-            _it = _next(_it, _size);
-            return *this;
-        }
-
-        group_iterator operator++(int)
-        {
-            group_iterator tmp = *this;
-            operator++();
-            return tmp;
-        }
-
-        group_iterator& operator--()
-        {
-            _it = _next(_it, -_size);
-            return *this;
-        }
-
-        group_iterator operator--(int)
-        {
-            group_iterator tmp = *this;
-            operator--();
-            return tmp;
-        }
-
-        group_iterator& operator+=(std::size_t increment)
-        {
-            _it = _next(_it, _size * increment);
-            return *this;
-        }
-
-        group_iterator& operator-=(std::size_t increment)
-        {
-            _it = _next(_it, -(_size * increment));
-            return *this;
-        }
-
-        ////////////////////////////////////////////////////////////
-        // Elements access operators
-
-        value_type operator[](std::size_t pos)
-        {
-            return *_next(_it, pos * _size + _size - 1);
-        }
-
-        value_type operator[](std::size_t pos) const
-        {
-            return *_next(_it, pos * _size + _size - 1);
-        }
-};
-
-template<typename Iterator>
-bool compare(Iterator lhs, Iterator rhs)
-{
-    return *lhs < *rhs;
-}
-
-template<typename Iterator1, typename Iterator2>
-void iter_swap(group_iterator<Iterator1> lhs, group_iterator<Iterator2> rhs)
-{
-    std::swap_ranges(lhs.base(), _next(lhs.base(), lhs.size()), rhs.base());
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator==(const group_iterator<Iterator1>& lhs,
-                const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base() == rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator!=(const group_iterator<Iterator1>& lhs,
-                const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base() != rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator<(const group_iterator<Iterator1>& lhs,
-               const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base() < rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator<=(const group_iterator<Iterator1>& lhs,
-                const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base() <= rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator>(const group_iterator<Iterator1>& lhs,
-               const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base() > rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator>=(const group_iterator<Iterator1>& lhs,
-                const group_iterator<Iterator2>& rhs)
-{
-    return lhs.base >= rhs.base();
+    std::list<Iterator> chain;
+    std::list<node<Iterator> > pend;
+    _fillChainAndPend(first, end, chain, pend, hasStray);
+    _binaryInsertionSortChain(chain, pend);
+    _moveFromChainToContainer(chain, first);
 }
 
 template<typename Iterator>
-group_iterator<Iterator> operator+(group_iterator<Iterator> it, std::size_t size)
-{
-    return it += size;
+void PmergeMe::_sort(Iterator first, Iterator last) {
+    _sortImplementation(
+        makeGroupIterator(first, 1),
+        makeGroupIterator(last, 1)
+    );
+}
+
+
+template<typename Iterator>
+void PmergeMe::_fillChainAndPend(
+    Iterator begin,
+    Iterator end,
+    typename std::list<Iterator> &chain,
+    typename std::list<node<Iterator> > &pend,
+    bool hasStray
+) {
+	chain.push_back(begin);
+	chain.push_back(moveIt(begin));
+
+    for (Iterator it = begin + 2 ; it != end ; it += 2) {
+        typename std::list<Iterator>::iterator tmp = chain.insert(chain.end(), moveIt(it));
+		node<Iterator> n = {.it = it, .next = tmp};
+        pend.push_back(n);
+    }
+
+    if (hasStray) {
+		node<Iterator> n = {.it = end, .next = chain.end()};
+        pend.push_back(n);
+    }
 }
 
 template<typename Iterator>
-group_iterator<Iterator> operator+(std::size_t size, group_iterator<Iterator> it)
-{
-    return it += size;
+void PmergeMe::_moveFromChainToContainer(typename std::list<Iterator> chain, Iterator first) {
+    std::vector<typename GroupIterator<Iterator>::value_type> cache;
+	for (typename std::list<Iterator>::iterator it = chain.begin(); it != chain.end(); ++it) {
+        typename Iterator::iterator_type begin = (*it).base();
+        typename Iterator::iterator_type end = moveIt(begin, (*it).size());
+        copyFromTo(begin, end, std::back_inserter(cache));
+	}
+    copyFromTo(cache.begin(), cache.end(), first.base());
 }
 
 template<typename Iterator>
-group_iterator<Iterator> operator-(group_iterator<Iterator> it, std::size_t size)
-{
-    return it -= size;
-}
+void PmergeMe::_binaryInsertionSortChain(
+    typename std::list<Iterator> &chain,
+    typename std::list<node<Iterator> > &pend
+) {
+	typedef typename std::list<Iterator>::iterator ChainIterator;
+	typedef typename std::list<node<Iterator> >::iterator NodeIterator;
 
-template<typename Iterator>
-typename group_iterator<Iterator>::difference_type operator-(const group_iterator<Iterator>& lhs, const group_iterator<Iterator>& rhs)
-{
-    return (std::distance(rhs.base(), lhs.base()) / lhs.size());
-}
-
-template<typename Iterator>
-group_iterator<Iterator> make_group_iterator(Iterator it, std::size_t size)
-{
-	group_iterator<Iterator> n(it, size);
-	return n;
-}
-
-template<typename Iterator>
-group_iterator<Iterator> make_group_iterator(group_iterator<Iterator> it, std::size_t size)
-{
-	group_iterator<Iterator> n(it.base(), size * it.size());
-	return n;
-}
-
-
-template<typename RandomAccessIterator>
-struct node
-{
-	RandomAccessIterator it;
-	typename std::list<RandomAccessIterator>::iterator next;
-};
-
-template<typename RandomAccessIterator>
-void PmergeMe::merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator last)
-{
-    // Cache all the differences between a Jacobsthal number and its
-    // predecessor that fit in 64 bits, starting with the difference
-    // between the Jacobsthal numbers 4 and 3 (the previous ones are
-    // unneeded)
     static ull jacobsthal_diff[] = {
         2u, 2u, 6u, 10u, 22u, 42u, 86u, 170u, 342u, 682u, 1366u,
         2730u, 5462u, 10922u, 21846u, 43690u, 87382u, 174762u, 349526u, 699050u,
@@ -321,55 +144,16 @@ void PmergeMe::merge_insertion_sort_impl(RandomAccessIterator first, RandomAcces
         1537228672809129216u, 3074457345618258432u, 6148914691236516864u
     };
 
-    std::size_t size = std::distance(first, last);
-    if (size < 2) return;
-
-    bool has_stray = (size % 2 != 0);
-
-    RandomAccessIterator end = has_stray ? _next(last, -1) : last;
-    for (RandomAccessIterator it = first ; it != end ; it += 2) {
-        if (it[1] < it[0]) {
-            iter_swap(it, it + 1);
-		}
-    }
-
-    merge_insertion_sort(
-        make_group_iterator(first, 2),
-        make_group_iterator(end, 2)
-    );
-
-
-	typedef typename std::list<RandomAccessIterator>::iterator ChainIterator;
-	typedef typename std::list<node<RandomAccessIterator> >::iterator NodeIterator;
-
-    std::list<RandomAccessIterator> chain;
-	chain.push_back(first);
-	chain.push_back(_next(first));
-    std::list<node<RandomAccessIterator> > pend;
-
-    for (RandomAccessIterator it = first + 2 ; it != end ; it += 2) {
-        ChainIterator tmp = chain.insert(chain.end(), _next(it));
-		node<RandomAccessIterator> n = {.it = it, .next = tmp};
-        pend.push_back(n);
-    }
-
-    if (has_stray) {
-		node<RandomAccessIterator> n = {.it = end, .next = chain.end()};
-        pend.push_back(n);
-    }
-
-    for (int k = 0 ; ; ++k)
-    {
-        ull dist = jacobsthal_diff[k];
+    for (int i = 0; ; ++i) {
+        ull dist = jacobsthal_diff[i];
         if (dist >= pend.size()) break;
         NodeIterator it = pend.begin();
         std::advance(it, dist);
 
-        while (true)
-        {
+        while (true) {
             ChainIterator insertion_point = std::upper_bound(
                 chain.begin(), it->next, it->it,
-            	compare<RandomAccessIterator>
+            	compare<Iterator>
             );
             chain.insert(insertion_point, it->it);
 
@@ -379,37 +163,13 @@ void PmergeMe::merge_insertion_sort_impl(RandomAccessIterator first, RandomAcces
         }
     }
 
-    while (not pend.empty())
-    {
-        NodeIterator it = _next(pend.end(), -1);
+    while (!pend.empty()) {
+        NodeIterator it = moveIt(pend.end(), -1);
         ChainIterator insertion_point = std::upper_bound(
             chain.begin(), it->next, it->it,
-            compare<RandomAccessIterator>
+            compare<Iterator>
         );
         chain.insert(insertion_point, it->it);
         pend.pop_back();
     }
-
-    std::vector<typename group_iterator<RandomAccessIterator>::value_type> cache;
-    cache.reserve(size);
-
-	for (ChainIterator __begin = chain.begin(), __end = chain.end(); __begin != __end; ++__begin)
-	{
-		RandomAccessIterator we = *__begin;
-        typename RandomAccessIterator::iterator_type begin = we.base();
-        typename RandomAccessIterator::iterator_type end = _next(begin, we.size());
-        mmove(begin, end, std::back_inserter(cache));
-	}
-    mmove(cache.begin(), cache.end(), first.base());
-}
-
-template<
-    typename RandomAccessIterator
->
-void PmergeMe::merge_insertion_sort(RandomAccessIterator first, RandomAccessIterator last)
-{
-    merge_insertion_sort_impl(
-        make_group_iterator(first, 1),
-        make_group_iterator(last, 1)
-    );
 }
