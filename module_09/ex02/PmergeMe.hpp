@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/26 22:42:24 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:38:41 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 #include <vector>
 #include <iterator>
 
-template<typename RandomAccessIterator>
-struct node {
-	RandomAccessIterator it;
-	typename std::list<RandomAccessIterator>::iterator next;
+template<typename Iterator>
+struct Pair {
+	Iterator first;
+	typename std::list<Iterator>::iterator chainIteratorSecond;
 };
 
 template<typename Iterator>
@@ -98,14 +98,14 @@ private:
         Iterator begin,
         Iterator end,
         typename std::list<Iterator> &chain,
-        typename std::list<node<Iterator> > &pend,
-        bool hasStray
+        typename std::list<Pair<Iterator> > &pend,
+        bool hasLeftover
     );
 
     template<typename Iterator>
     void _binaryInsertionSortChain(
         typename std::list<Iterator> &chain,
-        typename std::list<node<Iterator> > &pend
+        typename std::list<Pair<Iterator> > &pend
     );
 
     template<typename Iterator>
@@ -131,12 +131,14 @@ public:
     typedef typename std::iterator_traits<Iterator>::pointer pointer;
     typedef typename std::iterator_traits<Iterator>::reference reference;
 
-    GroupIterator(): _it(Iterator()), _size(0) {};
-
-    GroupIterator(Iterator it, std::size_t size):
-        _it(it),
-        _size(size)
-    {}
+    GroupIterator(): _it(Iterator()), _size(0) {}
+    GroupIterator(Iterator it, std::size_t size): _it(it), _size(size) {}
+    GroupIterator &operator=(GroupIterator<Iterator> value) {
+        _it = value._it;
+        _size = value._size;
+        return *this;
+    }
+    ~GroupIterator() {}
 
     iterator_type base() const {
         return _it;
@@ -150,33 +152,17 @@ public:
         return *moveIt(_it, _size - 1);
     }
 
-    pointer operator->() const {
-        return &(operator*());
-    }
-
-    GroupIterator& operator++() {
+    GroupIterator &operator++() {
         _it = moveIt(_it, _size);
         return *this;
     }
 
-    GroupIterator operator++(int) {
-        GroupIterator tmp = *this;
-        operator++();
-        return tmp;
-    }
-
-    GroupIterator& operator--() {
+    GroupIterator &operator--() {
         _it = moveIt(_it, -_size);
         return *this;
     }
 
-    GroupIterator operator--(int) {
-        GroupIterator tmp = *this;
-        operator--();
-        return tmp;
-    }
-
-    GroupIterator& operator+=(std::size_t increment) {
+    GroupIterator &operator+=(std::size_t increment) {
         _it = moveIt(_it, _size * increment);
         return *this;
     }
@@ -189,17 +175,7 @@ public:
     value_type operator[](std::size_t pos) {
         return *moveIt(_it, pos * _size + _size - 1);
     }
-
-    value_type operator[](std::size_t pos) const {
-        return *moveIt(_it, pos * _size + _size - 1);
-    }
 };
-
-template<typename Iterator1, typename Iterator2>
-bool operator==(const GroupIterator<Iterator1>& lhs,
-                const GroupIterator<Iterator2>& rhs) {
-    return lhs.base() == rhs.base();
-}
 
 template<typename Iterator1, typename Iterator2>
 bool operator!=(const GroupIterator<Iterator1>& lhs,
@@ -207,43 +183,9 @@ bool operator!=(const GroupIterator<Iterator1>& lhs,
     return lhs.base() != rhs.base();
 }
 
-template<typename Iterator1, typename Iterator2>
-bool operator<(const GroupIterator<Iterator1>& lhs,
-               const GroupIterator<Iterator2>& rhs) {
-    return lhs.base() < rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator<=(const GroupIterator<Iterator1>& lhs,
-                const GroupIterator<Iterator2>& rhs) {
-    return lhs.base() <= rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator>(const GroupIterator<Iterator1>& lhs,
-               const GroupIterator<Iterator2>& rhs) {
-    return lhs.base() > rhs.base();
-}
-
-template<typename Iterator1, typename Iterator2>
-bool operator>=(const GroupIterator<Iterator1>& lhs,
-                const GroupIterator<Iterator2>& rhs) {
-    return lhs.base >= rhs.base();
-}
-
 template<typename Iterator>
 GroupIterator<Iterator> operator+(GroupIterator<Iterator> it, std::size_t size) {
     return it += size;
-}
-
-template<typename Iterator>
-GroupIterator<Iterator> operator+(std::size_t size, GroupIterator<Iterator> it) {
-    return it += size;
-}
-
-template<typename Iterator>
-GroupIterator<Iterator> operator-(GroupIterator<Iterator> it, std::size_t size) {
-    return it -= size;
 }
 
 template<typename Iterator>

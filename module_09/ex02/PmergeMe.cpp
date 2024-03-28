@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/26 22:42:21 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:28:35 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,47 @@ std::list<PmergeMe::ull> PmergeMe::sortAsList(void) {
 }
 
 template<typename Iterator>
-void PmergeMe::_sortImplementation(Iterator first, Iterator last) {
+void printIt(std::string name, Iterator begin, Iterator end) {
+    std::cout << name << " ";
+    for (Iterator it = begin; it != end; ++it) {
+        std::cout << *it << ", ";
+    }
+    std::cout << std::endl;
+}
 
-    std::size_t size = std::distance(first, last);
+template<typename Iterator>
+void printItVe(std::string name, Iterator begin, Iterator end) {
+    std::cout << name << " ";
+    for (Iterator it = begin; it != end; ++it) {
+        std::cout << **it << ", ";
+    }
+    std::cout << std::endl;
+}
+
+template<typename Iterator>
+void PmergeMe::_sortImplementation(Iterator begin, Iterator end) {
+
+    std::size_t size = std::distance(begin, end);
     if (size < 2) return;
 
-    bool hasStray = (size % 2 != 0);
+    bool hasLeftover = (size % 2 != 0);
 
-    Iterator end = hasStray ? moveIt(last, -1) : last;
-    for (Iterator it = first ; it != end ; it += 2) {
+    Iterator last = hasLeftover ? moveIt(end, -1) : end;
+    for (Iterator it = begin ; it != last ; it += 2) {
         if (it[1] < it[0]) {
             swapGroupIterator(it, it + 1);
 		}
     }
-
     _sort(
-        makeGroupIterator(first, 2),
-        makeGroupIterator(end, 2)
+        makeGroupIterator(begin, 2),
+        makeGroupIterator(last, 2)
     );
 
     std::list<Iterator> chain;
-    std::list<node<Iterator> > pend;
-    _fillChainAndPend(first, end, chain, pend, hasStray);
+    std::list<Pair<Iterator> > pend;
+    _fillChainAndPend(begin, last, chain, pend, hasLeftover);
     _binaryInsertionSortChain(chain, pend);
-    _moveFromChainToContainer(chain, first);
+    _moveFromChainToContainer(chain, begin);
 }
 
 template<typename Iterator>
@@ -87,26 +104,25 @@ void PmergeMe::_sort(Iterator first, Iterator last) {
     );
 }
 
-
 template<typename Iterator>
 void PmergeMe::_fillChainAndPend(
     Iterator begin,
     Iterator end,
     typename std::list<Iterator> &chain,
-    typename std::list<node<Iterator> > &pend,
-    bool hasStray
+    typename std::list<Pair<Iterator> > &pend,
+    bool hasLeftover
 ) {
 	chain.push_back(begin);
 	chain.push_back(moveIt(begin));
 
     for (Iterator it = begin + 2 ; it != end ; it += 2) {
         typename std::list<Iterator>::iterator tmp = chain.insert(chain.end(), moveIt(it));
-		node<Iterator> n = {.it = it, .next = tmp};
+		Pair<Iterator> n = {.first = it, .chainIteratorSecond = tmp};
         pend.push_back(n);
     }
 
-    if (hasStray) {
-		node<Iterator> n = {.it = end, .next = chain.end()};
+    if (hasLeftover) {
+		Pair<Iterator> n = {.first = end, .chainIteratorSecond = chain.end()};
         pend.push_back(n);
     }
 }
@@ -125,12 +141,12 @@ void PmergeMe::_moveFromChainToContainer(typename std::list<Iterator> chain, Ite
 template<typename Iterator>
 void PmergeMe::_binaryInsertionSortChain(
     typename std::list<Iterator> &chain,
-    typename std::list<node<Iterator> > &pend
+    typename std::list<Pair<Iterator> > &pend
 ) {
 	typedef typename std::list<Iterator>::iterator ChainIterator;
-	typedef typename std::list<node<Iterator> >::iterator NodeIterator;
+	typedef typename std::list<Pair<Iterator> >::iterator PairIterator;
 
-    static ull jacobsthal_diff[] = {
+    static ull jacobsthalNumbers[] = {
         2u, 2u, 6u, 10u, 22u, 42u, 86u, 170u, 342u, 682u, 1366u,
         2730u, 5462u, 10922u, 21846u, 43690u, 87382u, 174762u, 349526u, 699050u,
         1398102u, 2796202u, 5592406u, 11184810u, 22369622u, 44739242u, 89478486u,
@@ -144,32 +160,33 @@ void PmergeMe::_binaryInsertionSortChain(
         1537228672809129216u, 3074457345618258432u, 6148914691236516864u
     };
 
-    for (int i = 0; ; ++i) {
-        ull dist = jacobsthal_diff[i];
+    int i = 0;
+    while (true) {
+        ull dist = jacobsthalNumbers[i];
         if (dist >= pend.size()) break;
-        NodeIterator it = pend.begin();
-        std::advance(it, dist);
+        PairIterator it = moveIt(pend.begin(), dist - 1);
 
         while (true) {
-            ChainIterator insertion_point = std::upper_bound(
-                chain.begin(), it->next, it->it,
+            ChainIterator insertionPoint = std::upper_bound(
+                chain.begin(), it->chainIteratorSecond, it->first,
             	compare<Iterator>
             );
-            chain.insert(insertion_point, it->it);
+            chain.insert(insertionPoint, it->first);
 
             it = pend.erase(it);
             if (it == pend.begin()) break;
-            --it;
+            it--;
         }
+        i++;
     }
 
     while (!pend.empty()) {
-        NodeIterator it = moveIt(pend.end(), -1);
-        ChainIterator insertion_point = std::upper_bound(
-            chain.begin(), it->next, it->it,
+        PairIterator it = moveIt(pend.end(), -1);
+        ChainIterator insertionPoint = std::upper_bound(
+            chain.begin(), it->chainIteratorSecond, it->first,
             compare<Iterator>
         );
-        chain.insert(insertion_point, it->it);
+        chain.insert(insertionPoint, it->first);
         pend.pop_back();
     }
 }

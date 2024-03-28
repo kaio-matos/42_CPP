@@ -102,10 +102,16 @@ async function init() {
     await manualTest([-3, -2, -1], "Bad arguments")
     await manualTest(["-0"], "Bad arguments")
 
-
-    for (let i = 1; i <= 10001; i += 100) {
+    for (let i = 1; i <= 20; i += 1) {
         console.log(COLORS.BLUE, `[INFO]     Size: ${i}`)
         const { arguments, expected } = generateRandomArguments(i)
+        await test(arguments, expected)
+    }
+
+    for (let i = 1; i <= 10001; i += 100) {
+        const random = Math.round(Math.random() * 100);
+        console.log(COLORS.BLUE, `[INFO]     Size: ${i + random}`)
+        const { arguments, expected } = generateRandomArguments(i + random)
         await test(arguments, expected)
     }
 }
