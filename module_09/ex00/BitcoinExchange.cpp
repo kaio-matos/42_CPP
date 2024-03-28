@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/18 19:39:51 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:00:38 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void BitcoinExchange::convert(std::string date, double amount) const {
 
 	std::map<std::string, double>::const_iterator found = this->_database.lower_bound(date);
 
-	if (found->first != date && found != _database.begin()) {
+	if (found == this->_database.end() || (found != _database.begin() && found->first != date)) {
 		found--;
 	}
 	std::string found_date = found->first;

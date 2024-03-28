@@ -6,7 +6,7 @@
 /*   By: kmatos-s <kmatos-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:57:11 by kmatos-s          #+#    #+#             */
-/*   Updated: 2024/03/27 22:28:35 by kmatos-s         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:26:21 by kmatos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,6 @@ std::list<PmergeMe::ull> PmergeMe::sortAsList(void) {
 	std::list<ull> unsorted = this->getUnsorted<std::list<ull> >();
 	this->_sort<std::list<ull>::iterator >(unsorted.begin(), unsorted.end());
 	return unsorted;
-}
-
-template<typename Iterator>
-void printIt(std::string name, Iterator begin, Iterator end) {
-    std::cout << name << " ";
-    for (Iterator it = begin; it != end; ++it) {
-        std::cout << *it << ", ";
-    }
-    std::cout << std::endl;
-}
-
-template<typename Iterator>
-void printItVe(std::string name, Iterator begin, Iterator end) {
-    std::cout << name << " ";
-    for (Iterator it = begin; it != end; ++it) {
-        std::cout << **it << ", ";
-    }
-    std::cout << std::endl;
 }
 
 template<typename Iterator>
